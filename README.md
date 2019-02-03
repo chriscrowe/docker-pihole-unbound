@@ -52,8 +52,12 @@ If all looks good, configure your router/DHCP server to serve your new Pi-Hole I
 
 ##  Acknowledgements
 
-- [http://tonylawrence.com/posts/unix/synology/free-your-synology-ports/][link1]
-- [https://github.com/MatthewVance/unbound-docker][link2]
+- [http://tonylawrence.com/posts/unix/synology/free-your-synology-ports/][synology-ports]
+- [https://github.com/MatthewVance/unbound-docker][unbound-docker]
+- [https://pi-hole.net][pihole]
+- [https://nlnetlabs.nl/projects/unbound/about/][unbound]
 
-[link1]: http://tonylawrence.com/posts/unix/synology/free-your-synology-ports/
-[link2]: https://github.com/MatthewVance/unbound-docker
+[synology-ports]: http://tonylawrence.com/posts/unix/synology/free-your-synology-ports/
+[unbound-docker]: https://github.com/MatthewVance/unbound-docker
+[pihole]: https://pi-hole.net
+[unbound]: https://nlnetlabs.nl/projects/unbound/about/
