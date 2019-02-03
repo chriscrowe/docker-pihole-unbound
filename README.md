@@ -30,17 +30,17 @@ sudo docker-compose up -d
 Test your configuration with dig:
 
 ```bash
-dig @192.168.1.248 google.com
+dig google.com @192.168.1.248
 # Expecting "status: NOERROR"
 ```
 
 You can also test for DNSSEC functionality:
 
 ```bash
-dig sigfail.verteiltesysteme.net @ 192.168.1.248
+dig sigfail.verteiltesysteme.net @192.168.1.248
 # Expecting "status: SERVFAIL"
 
-dig sigok.verteiltesysteme.net @ 192.168.1.248
+dig sigok.verteiltesysteme.net @192.168.1.248
 # Expecting "status: NOERROR"
 ```
 
