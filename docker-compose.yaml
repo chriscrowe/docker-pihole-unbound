@@ -5,7 +5,6 @@ services:
     container_name: pihole
     image: pihole/pihole:latest
     hostname: syn-hole
-    # domainname: my.network
     mac_address: d0:ca:ab:cd:ef:01
     cap_add:
       - NET_ADMIN
@@ -13,12 +12,11 @@ services:
       - 443/tcp
       - 53/tcp
       - 53/udp
-      # - 67/udp
+      # - 67/udp # Uncomment if you want to use Pi-Hole for DHCP
       - 80/tcp
     environment:
       ServerIP: 192.168.1.248
       WEBPASSWORD: ${WEBPASSWORD}
-      # VIRTUAL_HOST: pihole.my.network
       DNS1: 192.168.1.249
       DNS2: 192.168.1.13
     volumes:
@@ -36,8 +34,6 @@ services:
     image: mvance/unbound:latest
     hostname: syn-unbound
     mac_address: d0:ca:ab:cd:ef:02
-    # cap_add:
-    #   - NET_ADMIN
     ports:
       - 53/tcp
       - 53/udp
