@@ -10,22 +10,23 @@ This project uses a [`macvlan` Docker network](https://docs.docker.com/network/m
   - Pi-Hole ([pihole/pihole](https://hub.docker.com/r/pihole/pihole)) - Official from Pi-Hole
   - Unbound ([mvance/unbound](https://hub.docker.com/r/mvance/unbound))
 
+
 ## Instructions
 
-#### Before running
+### Before running...
 
 - Update some things in the docker compose, such as your IP addresses/subnets. 
 - Add a `.env` file next to the docker-compose.yaml so you can pass in the `${WEBPASSWORD}`
 - Update the secondary/backup nameserver in the `resolv.conf` file
 - Lastly you might want to provide some manual DNS entries in the `dnsmasq.conf` and/or `hosts` files
 
-#### Then run it
+### Run it!
 
 ```bash
 sudo docker-compose up -d
 ```
 
-#### After
+### Test it!
 
 Test your configuration with dig:
 
@@ -44,11 +45,15 @@ dig sigok.verteiltesysteme.net @192.168.1.248
 # Expecting "status: NOERROR"
 ```
 
+### Serve it! 
+
 If all looks good, configure your router/DHCP server to serve your new Pi-Hole IP address (`192.168.1.248`) to your clients. 
 
 
+##  Acknowledgements
 
-###  Acknowledgements
+- [http://tonylawrence.com/posts/unix/synology/free-your-synology-ports/][link1]
+- [https://github.com/MatthewVance/unbound-docker][link2]
 
-- http://tonylawrence.com/posts/unix/synology/free-your-synology-ports/
-- https://github.com/MatthewVance/unbound-docker
+[link1]: http://tonylawrence.com/posts/unix/synology/free-your-synology-ports/
+[link2]: https://github.com/MatthewVance/unbound-docker
