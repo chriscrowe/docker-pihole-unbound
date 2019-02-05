@@ -4,7 +4,7 @@ services:
   pihole:
     container_name: pihole
     image: pihole/pihole:latest
-    hostname: syn-hole
+    hostname: pi-hole
     mac_address: d0:ca:ab:cd:ef:01
     cap_add:
       - NET_ADMIN
