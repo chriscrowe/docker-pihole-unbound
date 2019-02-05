@@ -6,11 +6,38 @@
 
 Running Pi-Hole in Docker can be challenging due to networking requirements by Pi-Hole, this is especially true when the ports that Pi-Hole uses are shared by the host it's running on (this is true for Synology in the default configuration).
 
-This project uses a [`macvlan` Docker network](https://docs.docker.com/network/macvlan/) to place your containers on your main network, with their own IP addresses and MAC addresses. Pi-Hole uses Unbound as it's resolver, and Unbound uses Cloudflare (1.1.1.1) upstream in order to support DNSSEC and DNS-over-TLS.
+This project uses a [`macvlan` Docker network](https://docs.docker.com/network/macvlan/) to place your containers on your main network, with their own IP addresses and MAC addresses. 
 
 - This docker-compose runs the following 2 containers
   - Pi-Hole ([pihole/pihole](https://hub.docker.com/r/pihole/pihole)) - Official from Pi-Hole
   - Unbound ([mvance/unbound](https://hub.docker.com/r/mvance/unbound)) - There are several choices here but I like this one the best
+
+Pi-Hole uses Unbound as it's resolver, and Unbound uses Cloudflare (1.1.1.1) and CleanBrowsing upstream in order to support DNSSEC and DNS-over-TLS. **This is an important detail** about this particular setup-- we are not making queries direct to the root servers as some of the Pi-Hole docs show in their examples. Here's a snippet from the [Unbound config](https://github.com/MatthewVance/unbound-docker/blob/master/1.8.3/unbound.sh) (v1.8.3 as of writing this doc) showing what's happening:
+
+```
+...
+    forward-zone:
+        # Forward all queries (except those in cache and local zone) to
+        # upstream recursive servers
+        name: "."
+        
+        # Queries to this forward zone use TLS
+        forward-tls-upstream: yes
+        
+        # https://dnsprivacy.org/wiki/display/DP/DNS+Privacy+Test+Servers
+
+
+        # Cloudflare
+        forward-addr: 1.1.1.1@853#cloudflare-dns.com
+        forward-addr: 1.0.0.1@853#cloudflare-dns.com
+
+        # CleanBrowsing
+        forward-addr: 185.228.168.9@853#security-filter-dns.cleanbrowsing.org
+        forward-addr: 185.228.169.9@853#security-filter-dns.cleanbrowsing.org
+...
+```
+
+If you want to change any of this Unbound config then you can fork MatthewVance's [unbound-docker repo](https://github.com/MatthewVance/unbound-docker) and modify his `unbound.sh` file.
 
 
 ## Instructions
@@ -25,7 +52,22 @@ This project uses a [`macvlan` Docker network](https://docs.docker.com/network/m
 
 ### Run it!
 
+Copy the files up to your Docker host (eg Synology)
+
+On client machine:
+
 ```bash
+# Make sure the target directory exists first! 
+#  Can use something like `mkdir -p /volume1/docker/pihole-unbound`
+
+cd docker-pihole-unbound
+scp -r ./* myuser@synology.local:/volume1/docker/pihole-unbound/
+```
+
+On the Docker host (eg Synology)
+
+```bash
+cd /volume1/docker/pihole-unbound
 sudo docker-compose up -d
 ```
 
@@ -58,6 +100,16 @@ If all looks good, configure your router/DHCP server to serve your new Pi-Hole I
 
 > Note: it may take some time for the current DHCP leases to renew and for clients to get the new DNS service info -- generally the default is 24 hours or less.
 
+### Update it!
+
+When updated container images are released you can execute these commands on your Docker host to pull them in and run them
+
+```bash
+cd /volume1/docker/pihole-unbound
+sudo docker-compose down
+sudo docker-compose pull
+sudo docker-compose up -d
+```
 
 ##  Acknowledgements
 
