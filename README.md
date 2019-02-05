@@ -18,6 +18,7 @@ This project uses a [`macvlan` Docker network](https://docs.docker.com/network/m
 ### Hold your horses and configure some stuff first...
 
 - Update docker-compose to match your environment, eg. IP addresses/subnets. 
+	- Take note of the `networks.home.driver_opts.parent` value, the default value of `ovs_eth1` is for using the 2nd ethernet port on a Synology NAS with `Open vSwitch` enabled, if disabled use `eth1` instead, or whichever other interface you might be using in your setup.
 - Add a `.env` file next to the docker-compose.yaml so you can pass in the `${WEBPASSWORD}` - this is your Pi-Hole admin password. You can optionally leave this step out and set the password via CLI (`pihole -a -p`) after the Pi-Hole is running
 - Update the secondary/backup nameserver in the `resolv.conf` file, or remove it if you don't have a backup (would recommend having one!)
 - Lastly, optionally, you can provide some manual DNS entries in the `dnsmasq.conf` and/or `hosts` files
