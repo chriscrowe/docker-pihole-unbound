@@ -29,6 +29,8 @@ This project uses a [`macvlan` Docker network](https://docs.docker.com/network/m
 sudo docker-compose up -d
 ```
 
+__Note__: If you're using Synology, you'll need to `scp` these files to your NAS and run it from the CLI since `docker-compose` is not currently supported through their DSM GUI.
+
 ### Test it!
 
 Test your configuration with dig
