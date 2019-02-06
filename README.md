@@ -39,20 +39,30 @@ Pi-Hole uses Unbound as it's resolver, and Unbound uses Cloudflare (1.1.1.1) and
 
 If you want to change any of this Unbound config then you can fork MatthewVance's [unbound-docker repo](https://github.com/MatthewVance/unbound-docker) and modify his `unbound.sh` file.
 
+## Disclaimer
+
+Using this type of configuration on a Synology NAS is somewhat of an advanced use-case, and it should come with some security/stability considerations:
+
+- Enabling SSH on your Synology NAS is non-default and should be done with care. 
+	- I would recommend __(1)__ configuring SSH to not use default port 22 and __(2)__ to __never__ forward the SSH port outside of your home network.
+- Poking around in the Synology CLI can lead to bad things in your NAS if you you don't know what you're doing. As a rule of thumb I would not touch any files outside of the `/volumeX/` folders unless you know what you're doing. These are the folders which are reflected to the user inside of `File Station` GUI.
+
 
 ## Instructions
 
 ### Hold your horses and configure some stuff first...
 
-- Update docker-compose to match your environment, eg. IP addresses/subnets. 
-	- Take note of the `networks.home.driver_opts.parent` value, the default value of `ovs_eth1` is for using the 2nd ethernet port on a Synology NAS with `Open vSwitch` enabled, if disabled use `eth1` instead, or whichever other interface you might be using in your setup.
+- Update `docker-compose.yaml` to match your environment, eg. IP addresses/subnets. 
+	- Take note of the `networks.home.driver_opts.parent` value, the default value of `ovs_eth1` is for using the 2nd ethernet port on a Synology NAS with `Open vSwitch` enabled (configured in `Control Panel` -> `Network` -> `Network Interface` -> `Manage`), if disabled use `eth1` instead, or whichever other interface you might be using in your setup.
 - Add a `.env` file next to the docker-compose.yaml so you can pass in the `${WEBPASSWORD}` - this is your Pi-Hole admin password. You can optionally leave this step out and set the password via CLI (`pihole -a -p`) after the Pi-Hole is running
-- Update the secondary/backup nameserver in the `resolv.conf` file, or remove it if you don't have a backup (would recommend having one!)
-- Lastly, optionally, you can provide some manual DNS entries in the `dnsmasq.conf` and/or `hosts` files
+- Update the secondary/backup nameserver in the `pihole/config/resolv.conf` file, or remove it if you don't have a backup (would recommend having one!)
+- Lastly, optionally, you can provide some manual DNS entries in the `pihole/config/dnsmasq.conf` and/or `pihole/config/hosts` files
 
 ### Run it!
 
 Copy the files up to your Docker host (eg Synology)
+
+> __Note__: Synology does not support `docker-compose` via their GUI but the running containers that get created here will be visible there when you're done.
 
 On client machine:
 
