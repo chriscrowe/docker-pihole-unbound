@@ -90,23 +90,23 @@ Test your configuration with dig
 > __Note__: change the IP to your new Pi-Hole's IP
 
 ```bash
-dig google.com @192.168.1.248
+dig google.com @192.168.1.5
 # Expecting "status: NOERROR"
 ```
 
 You can also test for DNSSEC functionality:
 
 ```bash
-dig sigfail.verteiltesysteme.net @192.168.1.248
+dig sigfail.verteiltesysteme.net @192.168.1.5
 # Expecting "status: SERVFAIL"
 
-dig sigok.verteiltesysteme.net @192.168.1.248
+dig sigok.verteiltesysteme.net @192.168.1.5
 # Expecting "status: NOERROR"
 ```
 
 ### Serve it! 
 
-If all looks good, configure your router/DHCP server to serve your new Pi-Hole IP address (`192.168.1.248`) to your clients. 
+If all looks good, configure your router/DHCP server to serve your new Pi-Hole IP address (`192.168.1.5`) to your clients. 
 
 > Note: it may take some time for the current DHCP leases to renew and for clients to get the new DNS service info -- generally the default is 24 hours or less.
 

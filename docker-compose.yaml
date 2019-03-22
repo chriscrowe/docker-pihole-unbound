@@ -14,10 +14,11 @@ services:
       - 53/udp
       # - 67/udp # Uncomment if you want to use Pi-Hole for DHCP
       - 80/tcp
+      - 22/tcp
     environment:
-      ServerIP: 192.168.1.248
+      ServerIP: 192.168.1.5
       WEBPASSWORD: ${WEBPASSWORD}
-      DNS1: 192.168.1.249
+      DNS1: 192.168.1.6
       DNS2: 192.168.1.13
     volumes:
       - /volume1/docker/pihole-unbound/pihole/volume:/etc/pihole:rw
@@ -27,7 +28,7 @@ services:
       - /volume1/docker/pihole-unbound/pihole/config/pihole-FTL.conf:/etc/pihole/pihole-FTL.conf:ro
     networks:
       home:
-        ipv4_address: 192.168.1.248
+        ipv4_address: 192.168.1.5
     restart: always
   unbound:
     container_name: unbound
@@ -39,7 +40,7 @@ services:
       - 53/udp
     networks:
       home:
-        ipv4_address: 192.168.1.249
+        ipv4_address: 192.168.1.6
     restart: always
 
 networks:
@@ -51,4 +52,4 @@ networks:
       config:
         - subnet: 192.168.1.0/24
           gateway: 192.168.1.1
-          ip_range: 192.168.1.248/30
+          ip_range: 192.168.1.5/30 # 192.168.1.5 and 192.168.1.6
