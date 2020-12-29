@@ -116,8 +116,8 @@ When updated container images are released you can execute these commands on you
 
 ```bash
 cd /volume1/docker/pihole-unbound
-sudo docker-compose down
 sudo docker-compose pull
+sudo docker-compose down
 sudo docker-compose up -d
 ```
 
