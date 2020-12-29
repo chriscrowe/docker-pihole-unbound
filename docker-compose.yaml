@@ -6,13 +6,13 @@ services:
     image: pihole/pihole:latest
     hostname: pi-hole
     mac_address: d0:ca:ab:cd:ef:01
-    cap_add:
-      - NET_ADMIN
+#     cap_add: # Uncomment if you want to use Pi-Hole for DHCP
+#       - NET_ADMIN
     ports:
       - 443/tcp
       - 53/tcp
       - 53/udp
-      # - 67/udp # Uncomment if you want to use Pi-Hole for DHCP
+#       - 67/udp # Uncomment if you want to use Pi-Hole for DHCP
       - 80/tcp
       - 22/tcp
     environment:
