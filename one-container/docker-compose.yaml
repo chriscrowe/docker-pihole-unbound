@@ -24,7 +24,7 @@ services:
       CONDITIONAL_FORWARDING: ${REV_SERVER}
       CONDITIONAL_FORWARDING_IP: ${REV_SERVER_TARGET}
       CONDITIONAL_FORWARDING_DOMAIN: ${REV_SERVER_DOMAIN}
-      DNS1: 127.0.0.1:5335 # Hardcoded to our Unbound server
+      DNS1: 127.0.0.1#5335 # Hardcoded to our Unbound server
     network_mode: "host"
     volumes:
       - etc_pihole:/etc/pihole:rw
