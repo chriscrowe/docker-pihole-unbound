@@ -11,7 +11,6 @@ services:
     image: chriscrowe/pihole-unbound:latest
     hostname: pihole
     domainname: pihole.local
-    command: install_unbound_and_start.sh
     ports:
       - 8443:443/tcp
       - 53/tcp
