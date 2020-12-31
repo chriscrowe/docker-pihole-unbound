@@ -10,7 +10,7 @@ The base image for the container is the [official Pi-Hole container](https://hub
 
 First create a `.env` file to substitute variables for your deployment. 
 
-Example `.env` file:
+Example `.env` file in the same directory as your `docker-compose.yaml` file:
 
 ```
 ServerIP=192.168.1.10
