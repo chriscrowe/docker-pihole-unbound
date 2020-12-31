@@ -8,7 +8,7 @@ volumes:
 services:
   pihole:
     container_name: pihole
-    image: chriscrowe/pihole-unbound:latest
+    image: cbcrowe/pihole-unbound:latest
     hostname: pihole
     domainname: pihole.local
     ports:
@@ -18,13 +18,13 @@ services:
       - 8080:80/tcp
       # - 22/tcp # Uncomment to enable SSH
     environment:
-      ServerIP: ${SERVER_IP}
+      ServerIP: ${ServerIP}
       TZ: ${TZ}
       WEBPASSWORD: ${WEBPASSWORD}
-      CONDITIONAL_FORWARDING: ${CONDITIONAL_FORWARDING}
-      CONDITIONAL_FORWARDING_IP: ${CONDITIONAL_FORWARDING_IP}
-      CONDITIONAL_FORWARDING_DOMAIN: ${CONDITIONAL_FORWARDING_DOMAIN}
-      DNS1: 127.0.0.1:5335
+      CONDITIONAL_FORWARDING: ${REV_SERVER}
+      CONDITIONAL_FORWARDING_IP: ${REV_SERVER_TARGET}
+      CONDITIONAL_FORWARDING_DOMAIN: ${REV_SERVER_DOMAIN}
+      DNS1: 127.0.0.1:5335 # Hardcoded to our Unbound server
     network_mode: "host"
     volumes:
       - etc_pihole:/etc/pihole:rw
