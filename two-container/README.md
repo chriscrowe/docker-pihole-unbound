@@ -1,4 +1,4 @@
-# Pi-Hole + Unbound on Docker - 2 Containers
+# Pi-Hole + Unbound - 2 Containers
 
 #### (Synology-compatible!)
 

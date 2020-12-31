@@ -1,4 +1,4 @@
-# Pi-Hole + Unbound on Docker - 1 Container
+# Pi-Hole + Unbound - 1 Container
 
 ## Description
 
@@ -10,7 +10,7 @@ The base image for the container is the [official Pi-Hole container](https://hub
 
 First create a `.env` file to substitute variables for your deployment. 
 
-Example:
+Example `.env` file:
 
 ```
 ServerIP=192.168.1.10
@@ -21,9 +21,9 @@ REV_SERVER_DOMAIN=local
 REV_SERVER_TARGET=192.168.1.1
 ```
 
-#### Available environment variables
+### Available environment variables
 
-> Descriptions borrowed from [official pihole container](https://github.com/pi-hole/docker-pi-hole/):
+> Vars and descriptions replicated from the [official pihole container](https://github.com/pi-hole/docker-pi-hole/):
 
 | Docker Environment Var | Description|
 | --- | --- |
