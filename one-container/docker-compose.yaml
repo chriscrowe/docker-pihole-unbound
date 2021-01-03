@@ -30,3 +30,6 @@ services:
       - etc_pihole_dnsmasq-unbound:/etc/dnsmasq.d:rw
     restart: unless-stopped
 
+volumes:
+    etc_pihole-unbound:
+    etc_pihole_dnsmasq-unbound:
