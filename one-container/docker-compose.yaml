@@ -4,6 +4,8 @@ version: '2'
 services:
   pihole:
     container_name: pihole
+    cap_add:
+        - NET_ADMIN
     image: cbcrowe/pihole-unbound:latest
     hostname: pihole
     domainname: pihole.local
