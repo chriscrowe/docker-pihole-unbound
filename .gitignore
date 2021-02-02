@@ -1,3 +1,6 @@
 .env
 .DS_Store
 .idea
+
+*/etc_pihole_dnsmasq-unbound/
+*/etc_pihole-unbound/

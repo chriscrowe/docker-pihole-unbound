@@ -9,8 +9,8 @@ services:
     domainname: pihole.local
     ports:
       - 8443:443/tcp
-      - 53/tcp
-      - 53/udp
+      - 53:53/tcp
+      - 53:53/udp
       - 8080:80/tcp
       # - 22/tcp # Uncomment to enable SSH
     environment:
@@ -26,7 +26,7 @@ services:
       DNSSEC: "true" # Enable DNSSEC
     network_mode: "host"
     volumes:
-      - etc_pihole-unbound:/etc/pihole:rw
-      - etc_pihole_dnsmasq-unbound:/etc/dnsmasq.d:rw
+      - ./etc_pihole-unbound/:/etc/pihole:rw
+      - ./etc_pihole_dnsmasq-unbound/:/etc/dnsmasq.d/:rw
     restart: unless-stopped
 
