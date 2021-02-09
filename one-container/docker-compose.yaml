@@ -8,10 +8,10 @@ services:
     hostname: pihole
     domainname: pihole.local
     ports:
-      - 8443:443/tcp
+      - 443/tcp
       - 53/tcp
       - 53/udp
-      - 8080:80/tcp
+      - 80/tcp
       # - 22/tcp # Uncomment to enable SSH
     environment:
       ServerIP: ${ServerIP}
