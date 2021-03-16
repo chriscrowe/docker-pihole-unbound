@@ -37,6 +37,15 @@ REV_SERVER_TARGET=192.168.1.1
 REV_SERVER_CIDR=192.168.0.0/16
 ```
 
+### Using Portainer stacks?
+
+Portainer stacks are a little weird and don't want you to declare your named volumes, so remove this block from the top of the `docker-compose.yaml` file before copy/pasting into Portainer's stack editor:
+
+```yaml
+volumes:
+  etc_pihole-unbound:
+  etc_pihole_dnsmasq-unbound:
+```
 
 ### Running the stack
 
