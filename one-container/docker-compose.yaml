@@ -8,8 +8,8 @@ services:
   pihole:
     container_name: pihole
     image: cbcrowe/pihole-unbound:latest
-    hostname: pihole
-    domainname: ${HOSTNAME}
+    hostname: ${HOSTNAME}
+    domainname: ${DOMAIN_NAME}
     ports:
       - 443:443/tcp
       - 53:53/tcp
