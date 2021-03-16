@@ -10,6 +10,9 @@ services:
     image: cbcrowe/pihole-unbound:latest
     hostname: ${HOSTNAME}
     domainname: ${DOMAIN_NAME}
+	dns:
+      - 127.0.0.1
+	  - 1.1.1.1
     ports:
       - 443:443/tcp
       - 53:53/tcp
