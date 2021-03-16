@@ -9,7 +9,7 @@ services:
     container_name: pihole
     image: cbcrowe/pihole-unbound:latest
     hostname: pihole
-    domainname: pihole.local
+    domainname: ${HOSTNAME}
     ports:
       - 443:443/tcp
       - 53:53/tcp
