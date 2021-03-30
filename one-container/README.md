@@ -35,6 +35,8 @@ REV_SERVER=true
 REV_SERVER_DOMAIN=local
 REV_SERVER_TARGET=192.168.1.1
 REV_SERVER_CIDR=192.168.0.0/16
+HOSTNAME=pihole
+DOMAIN_NAME=pihole.local
 ```
 
 ### Using Portainer stacks?
