@@ -18,6 +18,7 @@ services:
       - 53:53/tcp
       - 53:53/udp
       - 80:80/tcp
+      # - 5335:5335/tcp # Uncomment to enable unbound access on local server
       # - 22/tcp # Uncomment to enable SSH
     environment:
       ServerIP: ${ServerIP}
