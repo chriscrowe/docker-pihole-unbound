@@ -39,7 +39,7 @@ services:
       - 53/tcp
       - 53/udp
     volumes: 
-      - /volume1/docker/pihole-unbound/unbound/unbound.conf:/opt/unbound/etc/unbound/
+      - /volume1/docker/pihole-unbound/unbound:/opt/unbound/etc/unbound/
     networks:
       home:
         ipv4_address: 192.168.1.6
