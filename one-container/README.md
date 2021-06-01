@@ -8,9 +8,9 @@ The base image for the container is the [official Pi-Hole container](https://hub
 
 ## Usage
 
-First create a `.env` file to substitute variables for your deployment. 
+First create a `.env` file to substitute variables for your deployment.
 
-
+Then create a folder on the host machine where you want to store your unbound config. Copy the unbound-pihole.conf file into this folder and make your changes. 
 ### Required environment variables
 
 > Vars and descriptions replicated from the [official pihole container](https://github.com/pi-hole/docker-pi-hole/):
@@ -24,6 +24,7 @@ First create a `.env` file to substitute variables for your deployment.
 | `REV_SERVER_DOMAIN: <Network Domain>`<br/> | If conditional forwarding is enabled, set the domain of the local network router
 | `REV_SERVER_TARGET: <Router's IP>`<br/> | If conditional forwarding is enabled, set the IP of the local network router
 | `REV_SERVER_CIDR: <Reverse DNS>`<br/>| If conditional forwarding is enabled, set the reverse DNS zone (e.g. `192.168.0.0/24`)
+| `UNBOUND_CONFIG_MOUNT: <Mount unbound config>`<br/>| Volume mount for path on host machine (`eg. './opt-unbound/:/opt/unbound/'. You should not change :/opt/unbound/`)
 
 Example `.env` file in the same directory as your `docker-compose.yaml` file:
 
@@ -37,6 +38,7 @@ REV_SERVER_TARGET=192.168.1.1
 REV_SERVER_CIDR=192.168.0.0/16
 HOSTNAME=pihole
 DOMAIN_NAME=pihole.local
+HOST_PATH=./opt-unbound/:/opt/unbound/
 ```
 
 ### Using Portainer stacks?
