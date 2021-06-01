@@ -31,6 +31,6 @@ services:
     volumes:
       - etc_pihole-unbound:/etc/pihole:rw
       - etc_pihole_dnsmasq-unbound:/etc/dnsmasq.d:rw
-      - '${HOST_PATH}' # change './opt-unbound/' to your desired path
+      - '${UNBOUND_CONFIG_MOUNT}'
     restart: unless-stopped
 
