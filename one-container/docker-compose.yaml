@@ -26,7 +26,7 @@ services:
       REV_SERVER_DOMAIN: ${REV_SERVER_DOMAIN}
       REV_SERVER_CIDR: ${REV_SERVER_CIDR}
       DNS1: 127.0.0.1#5335 # Hardcoded to our Unbound server
-      DNS2: 127.0.0.1#5335 # Hardcoded to our Unbound server
+      DNS2: "no" # this prevents duplicating the same server that's already on DNS1.
       DNSSEC: "true" # Enable DNSSEC
     volumes:
       - etc_pihole-unbound:/etc/pihole:rw
