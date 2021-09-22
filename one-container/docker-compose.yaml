@@ -10,13 +10,21 @@ services:
     image: cbcrowe/pihole-unbound:latest
     hostname: ${HOSTNAME}
     domainname: ${DOMAIN_NAME}
-    ports:
-      - 443:443/tcp
-      - 53:53/tcp
-      - 53:53/udp
-      - 80:80/tcp
-      # - 5335:5335/tcp # Uncomment to enable unbound access on local server
-      # - 22/tcp # Uncomment to enable SSH
+    networks:
+      macvlan_network:
+        ipv4_address: 100.64.0.5
+  # network_mode: "host"   #for host network
+    cap_add:  #for host and macvlan network
+      - NET_ADMIN  #for host and macvlan network
+  # ports:
+    # - 443:443/tcp
+    # - 53:53/tcp
+    # - 53:53/udp
+    # - 80:80/tcp
+    # - 67:67/udp
+    # - 67:67/tcp
+    # - 5335:5335/tcp # Uncomment to enable unbound access on local server
+    # - 22/tcp # Uncomment to enable SSH
     environment:
       ServerIP: ${ServerIP}
       TZ: ${TZ}
@@ -32,4 +40,8 @@ services:
       - etc_pihole-unbound:/etc/pihole:rw
       - etc_pihole_dnsmasq-unbound:/etc/dnsmasq.d:rw
     restart: unless-stopped
-
+networks:
+  macvlan_network:
+    external:
+      name: mynet
+    
