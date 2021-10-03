@@ -6,25 +6,17 @@ volumes:
 
 services:
   pihole:
-    container_name: pihole
+    container_name: pihole-unbound
     image: djroy/pihole-unbound:master
-    hostname: ${HOSTNAME}
-    domainname: ${DOMAIN_NAME}
     ports:
       - 443:443/tcp
       - 53:53/tcp
       - 53:53/udp
       - 80:80/tcp
-      # - 5335:5335/tcp # Uncomment to enable unbound access on local server
-      # - 22/tcp # Uncomment to enable SSH
+      - 5335:5335/tcp
+      - 22/tcp
     environment:
-      ServerIP: ${ServerIP}
-      TZ: ${TZ}
-      WEBPASSWORD: ${WEBPASSWORD}
-      REV_SERVER: ${REV_SERVER}
-      REV_SERVER_TARGET: ${REV_SERVER_TARGET}
-      REV_SERVER_DOMAIN: ${REV_SERVER_DOMAIN}
-      REV_SERVER_CIDR: ${REV_SERVER_CIDR}
+      TZ: "America/Los_Angeles"
       PIHOLE_DNS_: 127.0.0.1#5335;127.0.0.1#5335 # Hardcoded to our Unbound server
       DNSSEC: "true" # Enable DNSSEC
     volumes:
