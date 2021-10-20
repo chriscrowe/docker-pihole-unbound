@@ -33,4 +33,4 @@ jobs:
         with:
           context: ./one-container/pihole-unbound/
           push: true
-          tags: djroy/pihole-unbound:latest,djroy/pihole-unbound:"${{ steps.version.outputs.version }}"
+          tags: djroy/pihole-unbound:latest,djroy/pihole-unbound:${{ steps.version.outputs.version }}
