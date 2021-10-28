@@ -25,7 +25,7 @@ services:
       REV_SERVER_TARGET: ${REV_SERVER_TARGET}
       REV_SERVER_DOMAIN: ${REV_SERVER_DOMAIN}
       REV_SERVER_CIDR: ${REV_SERVER_CIDR}
-      PIHOLE_DNS_: 127.0.0.1#5335;127.0.0.1#5335 # Hardcoded to our Unbound server
+      PIHOLE_DNS_: 127.0.0.1#5335 # Hardcoded to our Unbound server
       DNSSEC: "true" # Enable DNSSEC
     volumes:
       - etc_pihole-unbound:/etc/pihole:rw
