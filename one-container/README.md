@@ -2,16 +2,13 @@
 
 ## Description
 
-This Docker deployment runs both Pi-Hole and Unbound in a single container. 
+This Docker deployment runs both Pi-Hole and Unbound in a single container.
 
 The base image for the container is the [official Pi-Hole container](https://hub.docker.com/r/pihole/pihole), with an extra build step added to install the Unbound resolver directly into to the container based on [instructions provided directly by the Pi-Hole team](https://docs.pi-hole.net/guides/unbound/).
 
 ## Usage
 
-First create a `.env` file to substitute variables for your deployment. 
-
-### Docker variables
-
+First create a `.env` file to substitute variables for your deployment.
 
 ### Pi-hole environment variables
 
@@ -30,17 +27,16 @@ First create a `.env` file to substitute variables for your deployment.
 
 Example `.env` file in the same directory as your `docker-compose.yaml` file:
 
-
 ```
 HOSTNAME=pihole
 DOMAIN_NAME=pihole.local
-PIHOLE_WEBPORT=8080
+PIHOLE_WEBPORT=80
 WEBTHEME=default-dark
 REV_SERVER=true
 REV_SERVER_TARGET=192.168.88.1
-REV_SERVER_DOMAIN=roeder.org
+REV_SERVER_DOMAIN=local
 REV_SERVER_CIDR=192.168.88.0/24
-FTLCONF_REPLY_ADDR4=192.168.88.200
+FTLCONF_REPLY_ADDR4=192.168.88.10
 TZ=America/Los_Angeles
 WEBPASSWORD==QWERTY123456asdfASDF
 WEBTHEME=default-dark
