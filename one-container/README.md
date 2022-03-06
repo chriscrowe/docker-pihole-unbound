@@ -30,7 +30,7 @@ Example `.env` file in the same directory as your `docker-compose.yaml` file:
 ```
 FTLCONF_REPLY_ADDR4=192.168.1.10
 TZ=America/Los_Angeles
-WEBPASSWORD==QWERTY123456asdfASDF
+WEBPASSWORD=QWERTY123456asdfASDF
 REV_SERVER=true
 REV_SERVER_TARGET=192.168.1.1
 REV_SERVER_DOMAIN=local
