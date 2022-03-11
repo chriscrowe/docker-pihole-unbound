@@ -16,7 +16,7 @@ services:
       - 80/tcp
       - 22/tcp
     environment:
-      - ServerIP=192.168.1.5
+      - FTLCONF_REPLY_ADDR4=192.168.1.5
       - WEBPASSWORD=${WEBPASSWORD}
       - PIHOLE_DNS_192.168.1.6;192.168.1.13
     volumes:
