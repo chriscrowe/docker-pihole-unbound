@@ -43,6 +43,8 @@ WEBTHEME=default-light
 
 ### Using Portainer stacks?
 
+> 2022-3-11: I'm being told the advice below is not longer true in Portainer. If you're using Portainer, try it without removing the volumes declaration and see if it works.
+
 Portainer stacks are a little weird and don't want you to declare your named volumes, so remove this block from the top of the `docker-compose.yaml` file before copy/pasting into Portainer's stack editor:
 
 ```yaml
