@@ -18,7 +18,7 @@ services:
     environment:
       - FTLCONF_REPLY_ADDR4=192.168.1.5
       - WEBPASSWORD=${WEBPASSWORD}
-      - PIHOLE_DNS_192.168.1.6;192.168.1.13
+      - PIHOLE_DNS_=192.168.1.6;192.168.1.13
     volumes:
       - /volume1/docker/pihole-unbound/pihole/volume:/etc/pihole:rw
       - /volume1/docker/pihole-unbound/pihole/config/hosts:/etc/hosts:ro
