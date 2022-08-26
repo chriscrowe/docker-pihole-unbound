@@ -18,7 +18,7 @@ services:
       # - 5335:5335/tcp # Uncomment to enable unbound access on local server
       # - 22/tcp # Uncomment to enable SSH
     environment:
-      - FTLCONF_REPLY_ADDR4=${FTLCONF_REPLY_ADDR4}
+      - FTLCONF_LOCAL_IPV4=${FTLCONF_LOCAL_IPV4}
       - TZ=${TZ:-UTC}
       - WEBPASSWORD=${WEBPASSWORD}
       - WEBTHEME=${WEBTHEME:-default-light}
