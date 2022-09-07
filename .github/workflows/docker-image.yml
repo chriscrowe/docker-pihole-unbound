@@ -21,7 +21,7 @@ jobs:
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag markusn1/docker-pihole-unbound:$(date +%s)
+      run: docker build one-container/pihole-unbound --file Dockerfile --tag markusn1/docker-pihole-unbound:$(date +%s)
       
     - name: Docker Push
       run: docker push ${{secrets.DOCKER_USER}}/docker-pihole-unbound
