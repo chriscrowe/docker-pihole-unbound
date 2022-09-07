@@ -8,8 +8,8 @@ services:
   pihole:
     container_name: pihole
     image: cbcrowe/pihole-unbound:latest
-    hostname: ${HOSTNAME}
-    domainname: ${DOMAIN_NAME}
+    hostname: pihole
+    domainname: docker
     ports:
       - 443:443/tcp
       - 53:53/tcp
@@ -18,17 +18,13 @@ services:
       # - 5335:5335/tcp # Uncomment to enable unbound access on local server
       # - 22/tcp # Uncomment to enable SSH
     environment:
-      - FTLCONF_REPLY_ADDR4=${FTLCONF_REPLY_ADDR4}
-      - TZ=${TZ:-UTC}
+      # - FTLCONF_REPLY_ADDR4=${FTLCONF_REPLY_ADDR4}
+      - TZ=Europe/Berlin
       - WEBPASSWORD=${WEBPASSWORD}
       - WEBTHEME=${WEBTHEME:-default-light}
-      - REV_SERVER=${REV_SERVER:-false}
-      - REV_SERVER_TARGET=${REV_SERVER_TARGET}
-      - REV_SERVER_DOMAIN=${REV_SERVER_DOMAIN}
-      - REV_SERVER_CIDR=${REV_SERVER_CIDR}
       - PIHOLE_DNS_=127.0.0.1#5335
       - DNSSEC="true"
-      - DNSMASQ_LISTENING=single
+      - DNSMASQ_LISTENING=all
     volumes:
       - etc_pihole-unbound:/etc/pihole:rw
       - etc_pihole_dnsmasq-unbound:/etc/dnsmasq.d:rw
