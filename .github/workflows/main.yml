@@ -1,0 +1,50 @@
+name: Push lastest release to dockerhub
+
+on:
+    # cron job to trigger the build on any push to main
+  push:
+    branches:
+      - 'main'
+  schedule:
+  # cron job to trigger the build dialy
+    - cron:  '0 0 * * *'
+
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: REST API with curl
+      id: STEP_GET_TAG
+      run: |
+        echo "VERSION=$(curl -s https://api.github.com/repos/pi-hole/docker-pi-hole/releases | jq '.[0] | .name' -r)" >> $GITHUB_OUTPUT
+      -  name: Get value
+      run: echo "The selected color is ${{ steps.STEP_GET_TAG.outputs.VERSION }}"
+      # - name: Get latest release of pihole docker
+      #   uses: rez0n/actions-github-release@main
+      #   id: pihole_version
+      #   env:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     repository: "pi-hole/docker-pi-hole"
+      #     type: "stable"
+      # -
+      #   name: Set up QEMU
+      #   uses: docker/setup-qemu-action@v2
+      # -
+      #   name: Set up Docker Buildx
+      #   uses: docker/setup-buildx-action@v2
+      # -
+      #   name: Login to Docker Hub
+      #   uses: docker/login-action@v2
+      #   with:
+      #     username: ${{ secrets.DOCKER_HUB_USERNAME }}
+      #     password: ${{ secrets.DOCKER_HUB_TOKEN }}
+      # -
+      #   name: Build and push
+      #   uses: docker/build-push-action@v3
+      #   with:
+      #     build-args: PIHOLE_VERSION=${{ steps.pihole_version.outputs.release }}
+      #     context: "{{defaultContext}}:one-container/pihole-unbound/"
+      #     platforms: linux/arm/v7,linux/arm64/v8,linux/amd64
+      #     push: true
+      #     tags: cbcrowe/pihole-unbound:latest,cbcrowe/pihole-unbound:${{ steps.pihole_version.outputs.release }}
