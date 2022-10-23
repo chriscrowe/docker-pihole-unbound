@@ -24,7 +24,7 @@ First create a `.env` file to substitute variables for your deployment.
 | `REV_SERVER_TARGET` | unset | Router's IP | If conditional forwarding is enabled, set the IP of the local network router |
 | `REV_SERVER_CIDR` | unset | Reverse DNS | If conditional forwarding is enabled, set the reverse DNS zone (e.g. `192.168.0.0/24`) |
 | `WEBTHEME` | `default-light` | `<"default-dark"\|"default-darker"\|"default-light"\|"default-auto"\|"lcars">`| User interface theme to use. |
-| `VIRTUAL_HOST` | `$FTLCONF_LOCAL_IPV4` | `<Custom Hostname>` | `What your web server 'virtual host' is, accessing admin through this Hostname/IP allows you to make changes to the whitelist / blacklists in addition to the default 'http://pi.hole/admin/' address` |
+| `VIRTUAL_HOST` | `$FTLCONF_LOCAL_IPV4` | `<Custom Hostname>` | What your web server 'virtual host' is, accessing admin through this Hostname/IP allows you to make changes to the whitelist / blacklists in addition to the default 'http://pi.hole/admin/' address |
 
 Example `.env` file in the same directory as your `docker-compose.yaml` file:
 
