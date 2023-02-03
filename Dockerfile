@@ -1,5 +1,5 @@
 #ARG PIHOLE_VERSION
-FROM pihole/pihole:2023.01.09
+FROM pihole/pihole:2023.01.9
 RUN apt update && apt install -y unbound
 
 COPY pihole-unbound/lighttpd-external.conf /etc/lighttpd/external.conf 
