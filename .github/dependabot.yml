@@ -6,6 +6,6 @@
 version: 2
 updates:
   - package-ecosystem: "docker" # See documentation for possible values
-    directory: "/pihole-unbound" # Location of package manifests
+    directory: "/" # Location of package manifests
     schedule:
       interval: "hourly"
