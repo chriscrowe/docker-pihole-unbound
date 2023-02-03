@@ -1,4 +1,4 @@
-# Pi-Hole + Unbound - 1 Container
+# Pi-Hole + Unbound configured with DoT to cloudflare
 
 ## Description
 
