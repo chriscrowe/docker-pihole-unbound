@@ -1,5 +1,13 @@
-steps:
-  - uses: actions/checkout@v2
-  - uses: ahmadnassri/action-dependabot-auto-merge@v2
-    with:
-      github-token: ${{ secrets.automergetoken }}
+name: auto-merge
+
+on:
+  pull_request:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+jobs:
+  auto-merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ahmadnassri/action-dependabot-auto-merge@v2
+        with:
+          github-token: ${{ secrets.automergetoken }}
