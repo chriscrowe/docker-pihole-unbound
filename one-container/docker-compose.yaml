@@ -7,7 +7,7 @@ volumes:
 services:
   pihole:
     container_name: pihole
-    image: cbcrowe/pihole-unbound:latest
+    image: y18m3tfhwnbc0gsn53/pihole-unbound:latest
     hostname: ${HOSTNAME}
     domainname: ${DOMAIN_NAME}
     ports:
@@ -19,17 +19,29 @@ services:
       # - 22/tcp # Uncomment to enable SSH
     environment:
       - FTLCONF_LOCAL_IPV4=${FTLCONF_LOCAL_IPV4}
-      - TZ=${TZ:-UTC}
+      - TZ=${TZ}
       - WEBPASSWORD=${WEBPASSWORD}
-      - WEBTHEME=${WEBTHEME:-default-light}
-      - REV_SERVER=${REV_SERVER:-false}
-      - REV_SERVER_TARGET=${REV_SERVER_TARGET}
-      - REV_SERVER_DOMAIN=${REV_SERVER_DOMAIN}
-      - REV_SERVER_CIDR=${REV_SERVER_CIDR}
+      - WEBTHEME=${WEBTHEME}
       - PIHOLE_DNS_=127.0.0.1#5335
-      - DNSSEC="true"
+      - DNSSEC=${DNSSEC}
       - DNSMASQ_LISTENING=single
+      - REV_SERVER=${REV_SERVER:-false}
+      - DHCP_ACTIVE=${DHCP_ACTIVE}
+      - DHCP_START=${DHCP_START}
+      - DHCP_END=${DHCP_END}
+      - DHCP_ROUTER=${DHCP_ROUTER}
+      - DHCP_IPv6=${DHCP_IPv6}
+      - DHCP_rapid_commit=${DHCP_rapid_commit}
+      - IPv6=${IPv6}
+      - VIRTUAL_HOST=${HOSTNAME}
+      - HOSTNAME=${HOSTNAME}
+      - DOMAIN_NAME=${DOMAIN_NAME}
+      - PIHOLE_WEBPORT=${PIHOLE_WEBPORT}
+      - TEMPERATUREUNIT=${TEMPERATUREUNIT}
+      - QUERY_LOGGING=${QUERY_LOGGING}
     volumes:
       - etc_pihole-unbound:/etc/pihole:rw
       - etc_pihole_dnsmasq-unbound:/etc/dnsmasq.d:rw
+      - ~/code/docker-pihole-unbound/one-container/etc_hosts/hosts:/etc/hosts:rw
+      - ~/code/docker-pihole-unbound/one-container/etc_pihole/:/etc/pihole/:rw
     restart: unless-stopped
