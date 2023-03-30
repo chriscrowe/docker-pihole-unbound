@@ -1,4 +1,4 @@
-version: '3.0'
+version: "3.0"
 
 volumes:
   etc_pihole-unbound:
@@ -7,7 +7,8 @@ volumes:
 services:
   pihole:
     container_name: pihole
-    image: cbcrowe/pihole-unbound:latest
+    build:
+      dockerfile: ./pihole-unbound/Dockerfile
     hostname: ${HOSTNAME}
     domainname: ${DOMAIN_NAME}
     ports:
