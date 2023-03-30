@@ -64,7 +64,7 @@ jobs:
 
   release:
     runs-on: ubuntu-latest
-    depends-on: deploy
+    needs: deploy
     steps:
       - name: Release
         uses: softprops/action-gh-release@v1
