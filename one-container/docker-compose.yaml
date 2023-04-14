@@ -1,4 +1,4 @@
-version: '2'
+version: '3.0'
 
 volumes:
   etc_pihole-unbound:
@@ -17,25 +17,24 @@ services:
     cap_add:  #for host and macvlan network
       - NET_ADMIN  #for host and macvlan network
   # ports:
-    # - 443:443/tcp
-    # - 53:53/tcp
-    # - 53:53/udp
-    # - 80:80/tcp
-    # - 67:67/udp
-    # - 67:67/tcp
-    # - 5335:5335/tcp # Uncomment to enable unbound access on local server
-    # - 22/tcp # Uncomment to enable SSH
+      - 443:443/tcp
+      - 53:53/tcp
+      - 53:53/udp
+      - ${PIHOLE_WEBPORT:-80}:80/tcp #Allows use of different port to access pihole web interface when other docker containers use port 80
+      # - 5335:5335/tcp # Uncomment to enable unbound access on local server
+      # - 22/tcp # Uncomment to enable SSH
     environment:
-      ServerIP: ${ServerIP}
-      TZ: ${TZ}
-      WEBPASSWORD: ${WEBPASSWORD}
-      REV_SERVER: ${REV_SERVER}
-      REV_SERVER_TARGET: ${REV_SERVER_TARGET}
-      REV_SERVER_DOMAIN: ${REV_SERVER_DOMAIN}
-      REV_SERVER_CIDR: ${REV_SERVER_CIDR}
-      DNS1: 127.0.0.1#5335 # Hardcoded to our Unbound server
-      DNS2: 127.0.0.1#5335 # Hardcoded to our Unbound server
-      DNSSEC: "true" # Enable DNSSEC
+      - FTLCONF_LOCAL_IPV4=${FTLCONF_LOCAL_IPV4}
+      - TZ=${TZ:-UTC}
+      - WEBPASSWORD=${WEBPASSWORD}
+      - WEBTHEME=${WEBTHEME:-default-light}
+      - REV_SERVER=${REV_SERVER:-false}
+      - REV_SERVER_TARGET=${REV_SERVER_TARGET}
+      - REV_SERVER_DOMAIN=${REV_SERVER_DOMAIN}
+      - REV_SERVER_CIDR=${REV_SERVER_CIDR}
+      - PIHOLE_DNS_=127.0.0.1#5335
+      - DNSSEC="true"
+      - DNSMASQ_LISTENING=single
     volumes:
       - etc_pihole-unbound:/etc/pihole:rw
       - etc_pihole_dnsmasq-unbound:/etc/dnsmasq.d:rw
@@ -44,4 +43,3 @@ networks:
   macvlan_network:
     external:
       name: mynet
-    

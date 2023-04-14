@@ -16,10 +16,9 @@ services:
       - 80/tcp
       - 22/tcp
     environment:
-      ServerIP: 192.168.1.5
-      WEBPASSWORD: ${WEBPASSWORD}
-      DNS1: 192.168.1.6
-      DNS2: 192.168.1.13
+      - FTLCONF_LOCAL_IPV4=192.168.1.5
+      - WEBPASSWORD=${WEBPASSWORD}
+      - PIHOLE_DNS_=192.168.1.6;192.168.1.13
     volumes:
       - /volume1/docker/pihole-unbound/pihole/volume:/etc/pihole:rw
       - /volume1/docker/pihole-unbound/pihole/config/hosts:/etc/hosts:ro
