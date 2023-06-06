@@ -13,7 +13,7 @@ updates:
       time: "14:00"
       day: "friday
     reviewers:
-      - @aleksanderbl29
+      - aleksanderbl29
   - package-ecosystem: "docker" # See documentation for possible values
     directory: "/" # Location of package manifests
     schedule:
@@ -22,4 +22,4 @@ updates:
       time: "14:00"
       day: "friday
     reviewers:
-      - @aleksanderbl29
+      - aleksanderbl29
