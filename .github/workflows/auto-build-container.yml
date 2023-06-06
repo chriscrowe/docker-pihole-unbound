@@ -1,0 +1,75 @@
+name: Get latest pihole release, build it and push to dockerhub
+
+on:
+  # cron job to trigger the build on any push to main
+  push:
+    branches:
+      - 'main'
+  schedule:
+  # cron job to trigger the build daily
+    - cron:  '0 0 * * *'
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Get latest release of pihole docker container
+      id: latest_release
+      env:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        repository: "pi-hole/docker-pi-hole"
+        type: "stable"
+      run: echo release=$(curl --silent "https://api.github.com/repos/pi-hole/docker-pi-hole/releases/latest" | jq -r '.tag_name') >> $GITHUB_OUTPUT
+
+    - name: Get previous release tag
+      id: previous_release
+      env:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        repository: "chriscrowe/docker-pihole-unbound"
+        type: "stable"
+      run: echo release=$(curl --silent "https://api.github.com/repos/chriscrowe/docker-pihole-unbound/releases/latest" | jq -r '.tag_name' ) >> $GITHUB_OUTPUT
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
+      if: ${{ steps.latest_release.outputs.release != steps.previous_release.outputs.release }}
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+      if: ${{ steps.latest_release.outputs.release != steps.previous_release.outputs.release }}
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_TOKEN }}
+      if: ${{ steps.latest_release.outputs.release != steps.previous_release.outputs.release }}
+
+    - name: Build and push
+      uses: docker/build-push-action@v3
+      with:
+        build-args: PIHOLE_VERSION=${{ steps.latest_release.outputs.release }}
+        context: "{{defaultContext}}:one-container/pihole-unbound/"
+        platforms: linux/arm/v7,linux/arm64/v8,linux/amd64
+        push: true
+        tags: cbcrowe/pihole-unbound:latest,cbcrowe/pihole-unbound:${{ steps.latest_release.outputs.release }}
+      if: ${{ steps.latest_release.outputs.release != steps.previous_release.outputs.release }}
+
+    - name: Create release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.latest_release.outputs.release }}
+        release_name: "${{ steps.latest_release.outputs.release }}"
+        body: |
+          Changelog found on [pi-hole github](https://github.com/pi-hole/docker-pi-hole/releases), please read the changes before updating.
+          You can update the docker image with:
+          ```
+          docker compose pull
+          docker compose up -d
+          ```
+      if: ${{ steps.latest_release.outputs.release != steps.previous_release.outputs.release }}
