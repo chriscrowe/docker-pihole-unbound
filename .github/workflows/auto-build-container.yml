@@ -9,6 +9,9 @@ on:
   # cron job to trigger the build daily
     - cron:  '0 0 * * 5'
 
+permissions:
+  contents: write
+
 jobs:
   docker:
     runs-on: ubuntu-latest
