@@ -55,7 +55,7 @@ jobs:
         context: "{{defaultContext}}:one-container/pihole-unbound/"
         platforms: linux/arm/v7,linux/arm64/v8,linux/amd64
         push: true
-        tags: cbcrowe/pihole-unbound:latest,cbcrowe/pihole-unbound:${{ steps.latest_release.outputs.release }}
+        tags: aleksanderbl/pihole-unbound:latest,aleksanderbl/pihole-unbound:${{ steps.latest_release.outputs.release }}
       if: ${{ steps.latest_release.outputs.release != steps.previous_release.outputs.release }}
 
     - name: Create release
