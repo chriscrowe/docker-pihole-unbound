@@ -11,7 +11,7 @@ updates:
       interval: "weekly"
       # Check for npm updates at 9am UTC
       time: "14:00"
-      day: "friday
+      day: "friday"
     reviewers:
       - aleksanderbl29
   - package-ecosystem: "docker" # See documentation for possible values
@@ -20,6 +20,6 @@ updates:
       interval: "weekly"
       # Check for npm updates at 9am UTC
       time: "14:00"
-      day: "friday
+      day: "friday"
     reviewers:
       - aleksanderbl29
