@@ -10,7 +10,7 @@ updates:
     schedule:
       interval: "weekly"
       day: "friday
-      time: "14:00
+      time: "14:00"
     reviewers:
       - "aleksanderbl29"
   - package-ecosystem: "docker" # See documentation for possible values
@@ -18,6 +18,6 @@ updates:
     schedule:
       interval: "weekly"
       day: "friday
-      time: "14:00
+      time: "14:00"
     reviewers:
       - "aleksanderbl29"
