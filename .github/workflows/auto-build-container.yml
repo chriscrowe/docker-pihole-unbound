@@ -1,4 +1,4 @@
-name: Get latest pihole release, build it and push to dockerhub
+name: Docker build and publish
 
 on:
   # cron job to trigger the build on any push to main
@@ -59,12 +59,12 @@ jobs:
       if: ${{ steps.latest_release.outputs.release != steps.previous_release.outputs.release }}
 
     - name: Create release
-      uses: actions/create-release@v1
+      uses: softprops/action-gh-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ steps.latest_release.outputs.release }}
-        release_name: "${{ steps.latest_release.outputs.release }}"
+        name: "${{ steps.latest_release.outputs.release }}"
         body: |
           Changelog found on [pi-hole github](https://github.com/pi-hole/docker-pi-hole/releases), please read the changes before updating.
           You can update the docker image with:
