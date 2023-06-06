@@ -52,7 +52,7 @@ jobs:
       if: ${{ steps.latest_release.outputs.release != steps.previous_release.outputs.release }}
 
     - name: Build and push
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v4
       with:
         build-args: PIHOLE_VERSION=${{ steps.latest_release.outputs.release }}
         context: "{{defaultContext}}:one-container/pihole-unbound/"
