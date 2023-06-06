@@ -9,8 +9,15 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+      day: "friday
+      time: "14:00
+    reviewers:
+      - "aleksanderbl29"
   - package-ecosystem: "docker" # See documentation for possible values
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
-reviewers: @aleksanderbl29
+      day: "friday
+      time: "14:00
+    reviewers:
+      - "aleksanderbl29"
