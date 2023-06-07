@@ -11,8 +11,6 @@ This repo has a different `docker-compose` config in the folder-- choose your fa
   - With this approach, we can also simplify our Docker networking since `macvlan` is no longer necessary.
 
 
-# Pi-Hole + Unbound - 1 Container
-
 ## Description
 
 This Docker deployment runs both Pi-Hole and Unbound in a single container.
