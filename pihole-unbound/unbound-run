@@ -1,0 +1,25 @@
+#!/command/with-contenv bash
+
+s6-echo "Starting unbound"
+
+NAME="unbound"
+DESC="DNS server"
+DAEMON="/usr/sbin/unbound"
+PIDFILE="/run/unbound.pid"
+
+HELPER="/usr/lib/unbound/package-helper"
+
+test -x $DAEMON || exit 0
+
+# Override this variable by editing or creating /etc/default/unbound.
+DAEMON_OPTS=""
+
+if [ -f /etc/default/unbound ]; then
+    . /etc/default/unbound
+fi
+
+$HELPER chroot_setup
+$HELPER root_trust_anchor_update 2>&1 | logger -p daemon.info -t unbound-anchor
+
+$DAEMON -d $DAEMON_OPTS
+

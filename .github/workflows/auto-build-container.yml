@@ -55,7 +55,7 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         build-args: PIHOLE_VERSION=${{ steps.latest_release.outputs.release }}
-        context: "{{defaultContext}}:one-container/pihole-unbound/"
+        context: "{{defaultContext}}:pihole-unbound/"
         platforms: linux/arm/v7,linux/arm64/v8,linux/amd64
         push: true
         tags: aleksanderbl/pihole-unbound:latest,aleksanderbl/pihole-unbound:${{ steps.latest_release.outputs.release }}
