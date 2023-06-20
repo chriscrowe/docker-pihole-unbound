@@ -42,6 +42,6 @@ services:
     volumes:
       - etc_pihole-unbound:/etc/pihole:rw
       - etc_pihole_dnsmasq-unbound:/etc/dnsmasq.d:rw
-      - ~/code/docker-pihole-unbound/one-container/etc_hosts/hosts:/etc/hosts:rw
-      - ~/code/docker-pihole-unbound/one-container/etc_pihole/:/etc/pihole/:rw
+      - ~/code/forks/docker-pihole-unbound/one-container/etc_hosts/hosts:/etc/hosts:rw
+      - ~/code/forks/docker-pihole-unbound/one-container/etc_pihole/:/etc/pihole/:rw
     restart: unless-stopped
