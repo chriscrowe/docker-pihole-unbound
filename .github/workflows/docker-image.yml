@@ -56,7 +56,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           file: pihole-unbound/Dockerfile
-          context: .
+          context: pihole-unbound/
           push: false
           tags: ghcr.io/${{ env.IMAGE_REPOSITORY }}:sha-${{ github.sha }}
       - name: Run Trivy vulnerability scanner
@@ -75,7 +75,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           file: Dockerfiles/backend.Dockerfile
-          context: .
+          context: pihole-unbound/
           push: true
           build-args: version=${{ github.ref_name }}
           tags: ${{ steps.meta.outputs.tags }}
