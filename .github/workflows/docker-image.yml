@@ -82,6 +82,6 @@ jobs:
           file: pihole-unbound/Dockerfile
           context: pihole-unbound/
           push: true
-          build-args: PIHOLE_VERSION=${{ VERSION }}
+          build-args: PIHOLE_VERSION=${{ env.VERSION }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
