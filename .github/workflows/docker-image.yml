@@ -52,7 +52,7 @@ jobs:
             ghcr.io/valyo/docker-pihole-unbound
       - name: Ensure lowercase name
         run: echo IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
-      -name: Set variables
+      - name: Set variables
         run: |
           VER=$(cat VERSION)
           echo "VERSION=$VER" >> $GITHUB_ENV
