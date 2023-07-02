@@ -74,7 +74,7 @@ jobs:
       - name: Publish image
         uses: docker/build-push-action@v3
         with:
-          file: Dockerfiles/backend.Dockerfile
+          file: pihole-unbound/Dockerfile
           context: pihole-unbound/
           push: true
           build-args: version=${{ github.ref_name }}
