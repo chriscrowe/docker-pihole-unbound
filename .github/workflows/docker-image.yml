@@ -54,7 +54,7 @@ jobs:
         run: echo IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
       - name: Set variables
         run: |
-          VER=$(cat VERSION)
+          VER=$(cat pihole-unbound/VERSION)
           echo "VERSION=$VER" >> $GITHUB_ENV
       - name: Build for scan
         uses: docker/build-push-action@v3
