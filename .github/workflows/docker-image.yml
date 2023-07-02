@@ -1,0 +1,87 @@
+# GHCR:
+# GitHub Container Repository
+# Images from ghcr are used when deploying prod and dev.
+#
+# Trivy
+# Trivy is a comprehensive and versatile security scanner. Trivy has scanners that look for
+# security issues, and targets where it can find those issues.
+#
+# This action publishes a docker image and then runs the trivy security scan on that image.
+# Potential security issues will be uploaded to the security tab in the repository.
+#
+# https://github.com/aquasecurity/trivy
+# ---------------------------------------
+# Publish Docker Image to GHCR and run Trivy Security Scan
+name: Publish to GHCR (+ Trivy scan)
+on:
+  workflow_dispatch:
+    branches: [dev]
+  pull_request:
+  push:
+    branches:
+      - main
+      - dev
+  release:
+    types: [published]
+jobs:
+  push_to_registry:
+    if: github.repository == 'valyo/docker-pihole-unbound'
+    name: Push image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      security-events: write
+    concurrency:
+      group: ${{ github.ref }}-docker-trivy
+      cancel-in-progress: true
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+      - name: Log in to Github Container Repository
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            ghcr.io/valyo/docker-pihole-unbound
+      - name: Ensure lowercase name
+        run: echo IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
+      - name: Set variables
+        run: |
+          VER=$(cat pihole-unbound/VERSION)
+          echo "VERSION=$VER" >> $GITHUB_ENV
+      - name: Build for scan
+        uses: docker/build-push-action@v3
+        with:
+          file: pihole-unbound/Dockerfile
+          context: pihole-unbound/
+          push: false
+          build-args: PIHOLE_VERSION=${{ env.VERSION }}
+          tags: ghcr.io/${{ env.IMAGE_REPOSITORY }}:sha-${{ github.sha }}
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@0.7.1
+        with:
+          image-ref: "ghcr.io/${{ env.IMAGE_REPOSITORY }}:sha-${{ github.sha }}"
+          format: "sarif"
+          output: "trivy-results.sarif"
+          severity: "CRITICAL,HIGH"
+      - name: Upload Trivy scan results to Github Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: "trivy-results.sarif"
+          category: trivy-build
+      - name: Publish image
+        uses: docker/build-push-action@v3
+        with:
+          file: pihole-unbound/Dockerfile
+          context: pihole-unbound/
+          push: true
+          build-args: PIHOLE_VERSION=${{ env.VERSION }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
