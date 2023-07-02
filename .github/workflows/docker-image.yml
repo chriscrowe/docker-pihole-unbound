@@ -83,5 +83,5 @@ jobs:
           context: pihole-unbound/
           push: true
           build-args: PIHOLE_VERSION=${{ env.VERSION }}
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ env.VERSION }}
           labels: ${{ steps.meta.outputs.labels }}
