@@ -58,4 +58,4 @@ docker-compose up -d
 
 You can build your own image locally by cloning the repo and running 
 the script [build_and_push.sh](pihole-unbound/build_and_push.sh) (edit the tag accordingly)
-If [VESRSION](pihole_unbound/VERSION) is empty, the image will be based on the latest version of the base container. To use a specific version of the base container, specify it in [VESRSION](pihole_unbound/VERSION).
+If [VERSION](pihole_unbound/VERSION) is empty, the image will be based on the latest version of the base container. To use a specific version of the base container, specify it in [VERSION](pihole_unbound/VERSION).
