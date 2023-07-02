@@ -58,6 +58,7 @@ jobs:
           file: pihole-unbound/Dockerfile
           context: pihole-unbound/
           push: false
+          build-args: PIHOLE_VERSION=${{ cat VERSION }}
           tags: ghcr.io/${{ env.IMAGE_REPOSITORY }}:sha-${{ github.sha }}
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.7.1
