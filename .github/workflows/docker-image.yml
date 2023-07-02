@@ -52,13 +52,17 @@ jobs:
             ghcr.io/valyo/docker-pihole-unbound
       - name: Ensure lowercase name
         run: echo IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
+      -name: Set variables
+        run: |
+          VER=$(cat VERSION)
+          echo "VERSION=$VER" >> $GITHUB_ENV
       - name: Build for scan
         uses: docker/build-push-action@v3
         with:
           file: pihole-unbound/Dockerfile
           context: pihole-unbound/
           push: false
-          build-args: PIHOLE_VERSION=${{ github.ref_name }}
+          build-args: PIHOLE_VERSION=${{ VERSION }}
           tags: ghcr.io/${{ env.IMAGE_REPOSITORY }}:sha-${{ github.sha }}
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.7.1
@@ -78,6 +82,6 @@ jobs:
           file: pihole-unbound/Dockerfile
           context: pihole-unbound/
           push: true
-          build-args: PIHOLE_VERSION=${{ github.ref_name }}
+          build-args: PIHOLE_VERSION=${{ VERSION }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
