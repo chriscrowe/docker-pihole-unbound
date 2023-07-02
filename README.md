@@ -1,4 +1,5 @@
 # Pi-Hole + Unbound on Docker
+_Forked from [chriscrowe/docker-pihole-unbound](https://github.com/chriscrowe/docker-pihole-unbound)_
 
 ### Use Docker to run [Pi-Hole](https://pi-hole.net) with an upstream [Unbound](https://nlnetlabs.nl/projects/unbound/about/) resolver.
 
@@ -47,22 +48,14 @@ PIHOLE_WEBPORT=80
 WEBTHEME=default-light
 ```
 
-### Using Portainer stacks?
-
-> 2022-3-11: I'm being told that the advice below is no longer true in Portainer. If you're using Portainer, first try it without removing the volumes declaration and see if it works.
-
-Portainer stacks are a little weird and don't want you to declare your named volumes, so remove this block from the top of the `docker-compose.yaml` file before copy/pasting into Portainer's stack editor:
-
-```yaml
-volumes:
-  etc_pihole-unbound:
-  etc_pihole_dnsmasq-unbound:
-```
-
 ### Running the stack
 
 ```bash
 docker-compose up -d
 ```
 
-> If using Portainer, just paste the `docker-compose.yaml` contents into the stack config and add your *environment variables* directly in the UI.
+### Base container versions and images building
+
+You can build your own image locally by cloning the repo and running 
+the script [build_and_push.sh](pihole-unbound/build_and_push.sh) (edit the tag accordingly)
+If [VESRSION](pihole_unbound/VERSION) is empty, the image will be based on the latest version of the base container. To use a specific version of the base container, specify it in [VESRSION](pihole_unbound/VERSION).
