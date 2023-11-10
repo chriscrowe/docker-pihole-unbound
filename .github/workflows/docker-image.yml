@@ -84,5 +84,5 @@ jobs:
           push: true
           build-args: PIHOLE_VERSION=${{ env.VERSION }}
           # tags: ${{ steps.meta.outputs.tags }}
-          tags: ghcr.io/${{ env.IMAGE_REPOSITORY }}:${{ env.BASE_IMAGE_VERSION }}-${{ github.sha }}
+          tags: ghcr.io/${{ env.IMAGE_REPOSITORY }}:${{ env.VERSION }}
           labels: ${{ steps.meta.outputs.labels }}
