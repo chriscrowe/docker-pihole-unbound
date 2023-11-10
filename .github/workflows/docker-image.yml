@@ -83,5 +83,6 @@ jobs:
           context: pihole-unbound/
           push: true
           build-args: PIHOLE_VERSION=${{ env.VERSION }}
-          tags: ${{ steps.meta.outputs.tags }}
+          # tags: ${{ steps.meta.outputs.tags }}
+          tags: ghcr.io/${{ env.IMAGE_REPOSITORY }}:${{ env.BASE_IMAGE_VERSION }}-${{ github.sha }}
           labels: ${{ steps.meta.outputs.labels }}
