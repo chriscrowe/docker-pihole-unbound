@@ -35,6 +35,7 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=schedule,pattern={{date 'YYYY.MM.DD'}}
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
           flavor: latest=auto
 
       - name: Set up Docker Buildx
