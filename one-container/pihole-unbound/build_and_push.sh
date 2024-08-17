@@ -4,4 +4,4 @@ PIHOLE_VER=`cat VERSION`
 docker buildx build --build-arg PIHOLE_VERSION=$PIHOLE_VER --platform linux/arm/v7,linux/arm64/v8,linux/amd64 -t cbcrowe/pihole-unbound:$PIHOLE_VER --push .
 docker buildx build --build-arg PIHOLE_VERSION=$PIHOLE_VER --platform linux/arm/v7,linux/arm64/v8,linux/amd64 -t cbcrowe/pihole-unbound:latest --push .
 
-
+# Possible to eliminate hard coded version number and use ':latest' flag instead?
