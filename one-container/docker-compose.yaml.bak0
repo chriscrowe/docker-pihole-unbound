@@ -5,23 +5,52 @@ volumes:
   etc_pihole_dnsmasq-unbound:
 
 services:
+  wg-easy:
+    environment:
+      - WG_HOST=172.10.16.111
+      - PASSWORD=Shindig.Surgical4.Traction
+      - WG_DEFAULT_DNS=100.64.0.5 # This is the Pi-Hole Container's IP Address
+      - WG_DEFAULT_ADDRESS=10.8.0.x
+      - WG_PERSISTENT_KEEPALIVE=25
+      - WG_ALLOWED_IPS=100.64.0.0/24
+    image: ghcr.io/wg-easy/wg-easy
+    container_name: wg-easy
+    volumes:
+      - ~/.wg-easy:/etc/wireguard
+    ports:
+      - "51820:51820/udp"
+      - "51821:51821/tcp"
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.src_valid_mark=1
+    networks:
+      macvlan_network:
+        ipv4_address: 100.64.0.6
+
   pihole:
     container_name: pihole
     image: cbcrowe/pihole-unbound:latest
     hostname: ${HOSTNAME}
     domainname: ${DOMAIN_NAME}
-    ports:
+    networks:
+      macvlan_network:
+        ipv4_address: 100.64.0.5
+    cap_add:  #for host and macvlan network
+      - NET_ADMIN  #for host and macvlan network
+<<<<<<< HEAD
+=======
+  # ports:
       - 443:443/tcp
       - 53:53/tcp
       - 53:53/udp
       - ${PIHOLE_WEBPORT:-80}:80/tcp #Allows use of different port to access pihole web interface when other docker containers use port 80
       # - 5335:5335/tcp # Uncomment to enable unbound access on local server
       # - 22/tcp # Uncomment to enable SSH
-    networks:
-      macvlan_network:
-        ipv4_address: 100.64.0.5
-    cap_add:  #for host and macvlan network
-      - NET_ADMIN  #for host and macvlan network
+>>>>>>> 01e05723dcea8f2c4a5b1557f67372b2c8beeb0c
     environment:
       - FTLCONF_LOCAL_IPV4=${FTLCONF_LOCAL_IPV4}
       - TZ=${TZ:-UTC}
@@ -38,8 +67,14 @@ services:
       - etc_pihole-unbound:/etc/pihole:rw
       - etc_pihole_dnsmasq-unbound:/etc/dnsmasq.d:rw
     restart: unless-stopped
+
 networks:
   macvlan_network:
     external:
+<<<<<<< HEAD
       name: mynet
 
+
+=======
+      name: mynet
+>>>>>>> 01e05723dcea8f2c4a5b1557f67372b2c8beeb0c
