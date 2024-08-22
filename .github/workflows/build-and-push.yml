@@ -1,0 +1,31 @@
+name: Build and Push to GHCR
+
+on:
+  push:
+    branches:
+      - main
+
+  schedule:
+    # Runs at 00:00 every Monday (UTC)
+    - cron: '0 0 * * 1'
+
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Log in to GitHub Container Registry
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+    - name: Run build_and_push.sh
+      run: |
+        chmod +x ./pihole-unbound/build_and_push.sh
+        ./pihole-unbound/build_and_push.sh
