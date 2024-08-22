@@ -14,7 +14,7 @@ if ! docker buildx inspect build &> /dev/null; then
 fi
 
 # Get the Pi-hole version from the VERSION file, or use environment variable if set
-PIHOLE_VER=${PIHOLE_VERSION:-$(cat VERSION)}
+PIHOLE_VER=${PIHOLE_VERSION:-$(cat ./pihole-unbound/VERSION)}
 
 # Define platforms to target
 PLATFORMS="linux/arm/v7,linux/arm64/v8,linux/amd64"
