@@ -1,0 +1,33 @@
+volumes:
+  pihole_unbound:
+  pihole_dnsmasq_unbound:
+
+services:
+  pihole:
+    container_name: pihole
+    image: bioszombie/pihole-unbound:latest
+    hostname: ${HOSTNAME}
+    domainname: ${DOMAIN_NAME}
+    ports:
+      - "443:443/tcp"
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "${PIHOLE_WEBPORT:-80}:80/tcp" # Allows use of different port for Pi-hole web interface when other Docker containers use port 80
+      - "5335:5335/tcp" # Uncomment to enable Unbound access on local server
+      # - "22:22/tcp" # Uncomment to enable SSH
+    environment:
+      FTLCONF_LOCAL_IPV4: ${FTLCONF_LOCAL_IPV4}
+      TZ: ${TZ:-UTC}
+      WEBPASSWORD: ${WEBPASSWORD}
+      WEBTHEME: ${WEBTHEME:-default-light}
+      REV_SERVER: ${REV_SERVER:-false}
+      REV_SERVER_TARGET: ${REV_SERVER_TARGET}
+      REV_SERVER_DOMAIN: ${REV_SERVER_DOMAIN}
+      REV_SERVER_CIDR: ${REV_SERVER_CIDR}
+      PIHOLE_DNS_: "127.0.0.1#5335"
+      DNSSEC: "true"
+      DNSMASQ_LISTENING: single
+    volumes:
+      - pihole_unbound:/etc/pihole:rw
+      - pihole_dnsmasq_unbound:/etc/dnsmasq.d:rw
+    restart: unless-stopped
