@@ -1,31 +1,45 @@
-name: Build and Push to GHCR
+#!/bin/bash
+set -euo pipefail
 
-on:
-  push:
-    branches:
-      - main
+# Check if Docker Buildx is installed
+if ! command -v docker buildx &> /dev/null; then
+    echo "Docker Buildx is not installed. Please install it and try again."
+    exit 1
+fi
 
-  schedule:
-    # Runs at 00:00 every Monday (UTC)
-    - cron: '0 0 * * 1'
+# Set up Docker Buildx builder if not already created
+if ! docker buildx inspect build &> /dev/null; then
+    echo "Creating Docker Buildx builder..."
+    docker buildx create --use --name build --node build --driver-opt network=host
+fi
 
-  workflow_dispatch: # Allows manual triggering
+# Get the Pi-hole version from the VERSION file, or use environment variable if set
+PIHOLE_VER=${PIHOLE_VERSION:-$(cat ./pihole-unbound/VERSION)}
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+# Define platforms to target
+PLATFORMS="linux/arm/v7,linux/arm64/v8,linux/amd64"
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+# Define image name
+IMAGE_NAME="bioszombie/pihole-unbound"
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
+# Build and push the version-specific image
+echo "Building and pushing image with tag: $PIHOLE_VER"
+docker buildx build \
+    --build-arg PIHOLE_VERSION=$PIHOLE_VER \
+    --platform $PLATFORMS \
+    -t $IMAGE_NAME:$PIHOLE_VER \
+    -f ./pihole-unbound/Dockerfile \
+    ./pihole-unbound \
+    --push .
 
-    - name: Log in to GitHub Container Registry
-      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+# Build and push the 'latest' tagged image
+echo "Building and pushing image with tag: latest"
+docker buildx build \
+    --build-arg PIHOLE_VERSION=$PIHOLE_VER \
+    --platform $PLATFORMS \
+    -t $IMAGE_NAME:latest \
+    -f ./pihole-unbound/Dockerfile \
+    ./pihole-unbound \
+    --push .
 
-    - name: Run build_and_push.sh
-      run: |
-        chmod +x ./pihole-unbound/build_and_push.sh
-        ./pihole-unbound/build_and_push.sh
+echo "Docker images successfully built and pushed."
