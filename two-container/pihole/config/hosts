@@ -1,5 +1,0 @@
-127.0.0.1  pi-hole
-::1        pi-hole
-
-192.168.1.1   gateway
-192.168.1.5 pi-hole
