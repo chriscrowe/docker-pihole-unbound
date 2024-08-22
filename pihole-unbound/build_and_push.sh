@@ -13,6 +13,14 @@ if ! docker buildx inspect build &> /dev/null; then
     docker buildx create --use --name build --node build --driver-opt network=host
 fi
 
+# Ensure GITHUB_USERNAME is set, or use the GitHub actor (the user who triggered the workflow) as a default
+GITHUB_USERNAME=${GITHUB_USERNAME:-${GITHUB_ACTOR:-}}
+
+if [ -z "$GITHUB_USERNAME" ]; then
+    echo "GITHUB_USERNAME is not set. Please set it as an environment variable."
+    exit 1
+fi
+
 # Get the Pi-hole version from the VERSION file, or use the environment variable if set
 PIHOLE_VER=${PIHOLE_VERSION:-$(cat ./pihole-unbound/VERSION)}
 
