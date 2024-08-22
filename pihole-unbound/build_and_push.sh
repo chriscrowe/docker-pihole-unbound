@@ -13,6 +13,12 @@ if ! docker buildx inspect build &> /dev/null; then
     docker buildx create --use --name build --node build --driver-opt network=host
 fi
 
+# Ensure GITHUB_TOKEN is set
+if [ -z "${GITHUB_TOKEN:-}" ]; then
+    echo "GITHUB_TOKEN is not set. Please set it as an environment variable."
+    exit 1
+fi
+
 # Ensure GITHUB_USERNAME is set, or use the GitHub actor (the user who triggered the workflow) as a default
 GITHUB_USERNAME=${GITHUB_USERNAME:-${GITHUB_ACTOR:-}}
 
