@@ -27,5 +27,7 @@ jobs:
 
     - name: Run build_and_push.sh
       run: |
+        export GITHUB_USERNAME=${{ github.actor }}
+        export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
         chmod +x ./pihole-unbound/build_and_push.sh
         ./pihole-unbound/build_and_push.sh
