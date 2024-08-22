@@ -19,11 +19,14 @@ PIHOLE_VER=${PIHOLE_VERSION:-$(cat ./pihole-unbound/VERSION)}
 # Define platforms to target
 PLATFORMS="linux/arm/v7,linux/arm64/v8,linux/amd64"
 
-# Define image name
-IMAGE_NAME="bioszombie/pihole-unbound"
+# Define image name for GitHub Container Registry
+IMAGE_NAME="ghcr.io/${GITHUB_USERNAME}/pihole-unbound"
 
-# Build and push the version-specific image
-echo "Building and pushing image with tag: $PIHOLE_VER"
+# Log in to GitHub Container Registry (GHCR)
+echo "${GITHUB_TOKEN}" | docker login ghcr.io -u "${GITHUB_USERNAME}" --password-stdin
+
+# Build and push the version-specific image to GHCR
+echo "Building and pushing image with tag: $PIHOLE_VER to GHCR"
 docker buildx build \
     --build-arg PIHOLE_VERSION="$PIHOLE_VER" \
     --platform "$PLATFORMS" \
@@ -32,8 +35,8 @@ docker buildx build \
     ./pihole-unbound \
     --push
 
-# Build and push the 'latest' tagged image
-echo "Building and pushing image with tag: latest"
+# Build and push the 'latest' tagged image to GHCR
+echo "Building and pushing image with tag: latest to GHCR"
 docker buildx build \
     --build-arg PIHOLE_VERSION="$PIHOLE_VER" \
     --platform "$PLATFORMS" \
@@ -42,4 +45,4 @@ docker buildx build \
     ./pihole-unbound \
     --push
 
-echo "Docker images successfully built and pushed."
+echo "Docker images successfully built and pushed to GHCR."
