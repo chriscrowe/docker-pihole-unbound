@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-# Check if Docker Buildx is installed
+# Ensure Docker Buildx is installed
 if ! command -v docker buildx &> /dev/null; then
     echo "Docker Buildx is not installed. Please install it and try again."
     exit 1
@@ -13,7 +13,7 @@ if ! docker buildx inspect build &> /dev/null; then
     docker buildx create --use --name build --node build --driver-opt network=host
 fi
 
-# Get the Pi-hole version from the VERSION file, or use environment variable if set
+# Get the Pi-hole version from the VERSION file, or use the environment variable if set
 PIHOLE_VER=${PIHOLE_VERSION:-$(cat ./pihole-unbound/VERSION)}
 
 # Define platforms to target
@@ -25,17 +25,21 @@ IMAGE_NAME="bioszombie/pihole-unbound"
 # Build and push the version-specific image
 echo "Building and pushing image with tag: $PIHOLE_VER"
 docker buildx build \
-    --build-arg PIHOLE_VERSION=$PIHOLE_VER \
-    --platform $PLATFORMS \
-    -t $IMAGE_NAME:$PIHOLE_VER \
-    --push .
+    --build-arg PIHOLE_VERSION="$PIHOLE_VER" \
+    --platform "$PLATFORMS" \
+    -t "$IMAGE_NAME:$PIHOLE_VER" \
+    -f ./pihole-unbound/Dockerfile \
+    ./pihole-unbound \
+    --push
 
 # Build and push the 'latest' tagged image
 echo "Building and pushing image with tag: latest"
 docker buildx build \
-    --build-arg PIHOLE_VERSION=$PIHOLE_VER \
-    --platform $PLATFORMS \
-    -t $IMAGE_NAME:latest \
-    --push .
+    --build-arg PIHOLE_VERSION="$PIHOLE_VER" \
+    --platform "$PLATFORMS" \
+    -t "$IMAGE_NAME:latest" \
+    -f ./pihole-unbound/Dockerfile \
+    ./pihole-unbound \
+    --push
 
 echo "Docker images successfully built and pushed."
