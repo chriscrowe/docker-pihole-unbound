@@ -1,53 +1,80 @@
-# Pi-Hole + Unbound - 1 Container
 
-## Description
+# Pi-Hole + Unbound - Combined Container
 
-This Docker deployment runs both Pi-Hole and Unbound in a single container.
+## Overview
 
-The base image for the container is the [official Pi-Hole container](https://hub.docker.com/r/pihole/pihole), with additional build steps added to install the Unbound DNS resolver directly into the container and automate the downloading of the root hints file, based on [instructions provided directly by the Pi-Hole team](https://docs.pi-hole.net/guides/unbound/).
+This repository provides a Docker-based deployment that integrates Pi-Hole and Unbound into a single, streamlined container. The base image utilizes the [official Pi-Hole container](https://hub.docker.com/r/pihole/pihole), enhanced with additional steps to install and configure the Unbound DNS resolver. The setup includes automated downloading and updating of the root hints file, following [best practices as outlined by the Pi-Hole team](https://docs.pi-hole.net/guides/unbound/).
 
-## Usage
+## Table of Contents
 
-First, create a `.env` file to substitute variables for your deployment.
+- [Overview](#overview)
+- [Prerequisites](#prerequisites)
+- [Usage Instructions](#usage-instructions)
+  - [Environment Configuration](#1-environment-configuration)
+  - [Sample `.env` File](#2-sample-env-file)
+  - [Using Portainer Stacks](#3-using-portainer-stacks)
+  - [Deploying the Stack](#4-deploying-the-stack)
+  - [Unbound Root Hints Automation](#5-unbound-root-hints-automation)
+- [Troubleshooting](#troubleshooting)
+  - [Common Issues](#common-issues)
+  - [Viewing Logs](#viewing-logs)
+- [Updating the Container](#updating-the-container)
+- [Contributing](#contributing)
+- [License](#license)
+- [Additional Resources](#additional-resources)
 
-### Pi-hole Environment Variables
+## Prerequisites
 
-> Vars and descriptions replicated from the [official Pi-hole container documentation](https://github.com/pi-hole/docker-pi-hole/#environment-variables):
+Before you begin, ensure you have the following installed:
 
-| Variable | Default | Value | Description |
-| -------- | ------- | ----- | ----------- |
-| `TZ` | UTC | `<Timezone>` | Set your [timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) to make sure logs rotate at local midnight instead of at UTC midnight. |
-| `WEBPASSWORD` | random | `<Admin password>` | [http://pi.hole/admin](http://pi.hole/admin) password. Run `docker logs pihole \| grep random` to find your random pass. |
-| `FTLCONF_LOCAL_IPV4` | unset | `<Host's IP>` | Set to your server's LAN IP, used by web block modes and lighttpd bind address. |
-| `REV_SERVER` | `false` | `<"true"\|"false">` | Enable DNS conditional forwarding for device name resolution. |
-| `REV_SERVER_DOMAIN` | unset | Network Domain | If conditional forwarding is enabled, set the domain of the local network router. |
-| `REV_SERVER_TARGET` | unset | Router's IP | If conditional forwarding is enabled, set the IP of the local network router. |
-| `REV_SERVER_CIDR` | unset | Reverse DNS | If conditional forwarding is enabled, set the reverse DNS zone (e.g., `192.168.0.0/24`). |
-| `WEBTHEME` | `default-light` | `<"default-dark"\|"default-darker"\|"default-light"\|"default-auto"\|"lcars">` | User interface theme to use. |
+- [Docker](https://docs.docker.com/get-docker/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- (Optional) [Portainer](https://www.portainer.io/) if you prefer a UI-based management tool
 
-### Example `.env` File
+## Usage Instructions
 
-Create a `.env` file in the same directory as your `docker-compose.yaml` file, for example:
+### 1. Environment Configuration
 
-```env
-FTLCONF_LOCAL_IPV4=192.168.1.10
-TZ=America/Los_Angeles
-WEBPASSWORD=QWERTY123456asdfASDF
+Begin by creating a `.env` file to define your environment-specific variables. This file will be used to customize your deployment settings.
+
+### Pi-Hole Environment Variables
+
+> The following environment variables are based on the official Pi-Hole Docker container documentation. Adjust these according to your network configuration and preferences:
+
+| Variable              | Default       | Example Value                    | Description                                                                                 |
+|-----------------------|---------------|----------------------------------|---------------------------------------------------------------------------------------------|
+| `TZ`                  | `UTC`         | `America/New_York`               | Set your [timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) to ensure log rotation aligns with local time. |
+| `WEBPASSWORD`         | random        | `YourSecurePassword123`          | Password for accessing the Pi-Hole admin interface at `http://pi.hole/admin`. Retrieve it by running `docker logs pihole \| grep random`. |
+| `FTLCONF_LOCAL_IPV4`  | unset         | `192.168.1.100`                  | The LAN IP address of your server, used by Pi-Hole’s web block modes and Lighttpd binding.  |
+| `REV_SERVER`          | `false`       | `true`                           | Enable DNS conditional forwarding to resolve local device names.                            |
+| `REV_SERVER_DOMAIN`   | unset         | `localdomain`                    | Set the domain name of your local network for conditional forwarding.                       |
+| `REV_SERVER_TARGET`   | unset         | `192.168.1.1`                    | Specify the IP address of your local network router.                                        |
+| `REV_SERVER_CIDR`     | unset         | `192.168.1.0/24`                 | Define the reverse DNS zone for your network (e.g., `192.168.1.0/24`).                      |
+| `WEBTHEME`            | `default-light` | `default-dark`                 | Choose the user interface theme (`default-dark`, `default-light`, `lcars`, etc.).           |
+
+### 2. Sample `.env` File
+
+Below is a sample `.env` file that you can adapt to your environment:
+
+```bash
+FTLCONF_LOCAL_IPV4=192.168.1.100
+TZ=America/New_York
+WEBPASSWORD=YourSecurePassword123
 REV_SERVER=true
-REV_SERVER_DOMAIN=local
+REV_SERVER_DOMAIN=localdomain
 REV_SERVER_TARGET=192.168.1.1
-REV_SERVER_CIDR=192.168.0.0/16
+REV_SERVER_CIDR=192.168.1.0/24
 HOSTNAME=pihole
 DOMAIN_NAME=pihole.local
 PIHOLE_WEBPORT=80
-WEBTHEME=default-light
+WEBTHEME=default-dark
 ```
 
-### Using Portainer Stacks?
+### 3. Using Portainer Stacks
 
-> **Note:** As of 2022-03-11, the following advice may no longer be necessary in Portainer. If you're using Portainer, first try it without removing the volumes declaration and see if it works.
+> **Note:** As of 2022-03-11, the requirement to remove the volumes declaration may no longer apply in Portainer. Please test without modification first.
 
-Portainer stacks may require you to remove the named volumes declaration from the top of the `docker-compose.yaml` file before pasting it into Portainer's stack editor:
+If you encounter issues with Portainer stacks, consider removing the named volumes declaration from the top of the `docker-compose.yaml` file before pasting it into Portainer's stack editor:
 
 ```yaml
 volumes:
@@ -55,27 +82,75 @@ volumes:
   etc_pihole_dnsmasq-unbound:
 ```
 
-### Running the Stack
+### 4. Deploying the Stack
 
-To deploy the stack using Docker Compose, run:
+To deploy the stack using Docker Compose, execute the following command:
 
 ```bash
 docker-compose up -d
 ```
 
-> If using Portainer, paste the `docker-compose.yaml` contents into the stack config and add your environment variables directly in the Portainer UI.
+> If deploying via Portainer, paste the contents of `docker-compose.yaml` into the stack configuration editor, and set your environment variables directly through the Portainer UI.
 
-### Unbound Root Hints Automation
+### 5. Unbound Root Hints Automation
 
-This container setup includes a process that automatically downloads and updates the Unbound root hints file during the Docker image build. The root hints file provides a list of authoritative root DNS servers that Unbound uses to resolve DNS queries directly.
+This deployment includes an automated process for downloading and updating the Unbound root hints file during the Docker image build. The root hints file is crucial for ensuring Unbound queries authoritative root DNS servers directly, improving DNS resolution accuracy and reliability.
 
-#### How It Works:
+#### Implementation Details
 
-- **Script:** A script (`download-root-hints.sh`) is included in the Docker image that:
+- **Script Execution:** The Docker image includes a script (`download-root-hints.sh`) that:
   - [Downloads the latest root hints file from Internic](https://www.internic.net/domain/named.cache).
-  - Saves the root hints file to `/var/lib/unbound/root.hints`.
-  - Updates the Unbound configuration to use the downloaded root hints.
+  - Stores the root hints file at `/var/lib/unbound/root.hints`.
+  - Updates Unbound’s configuration to reference the latest root hints file.
 
-- **Dockerfile:** The Dockerfile has been updated to include this script and ensure it is executed during the build process, ensuring the root hints are always up-to-date.
+- **Dockerfile Configuration:** The Dockerfile has been updated to include and execute this script during the build process, ensuring the container always uses the latest root hints.
 
-This setup enhances the accuracy and reliability of DNS resolution by ensuring that Unbound always starts with the latest information on root DNS servers.
+By maintaining up-to-date root hints, this deployment ensures that Unbound operates with the most current information available, enhancing the overall security and reliability of your DNS resolution.
+
+## Troubleshooting
+
+### Common Issues
+
+- **Issue:** `FTLCONF_LOCAL_IPV4` not set or incorrect.
+  - **Solution:** Ensure that `FTLCONF_LOCAL_IPV4` is correctly set to your server’s LAN IP address. This IP must be accessible by other devices on your network.
+
+- **Issue:** Pi-hole admin interface is not accessible.
+  - **Solution:** Verify that the `PIHOLE_WEBPORT` is correctly mapped in your `docker-compose.yaml` file and that no other services are using the same port.
+
+- **Issue:** DNS resolution fails.
+  - **Solution:** Check the Unbound logs within the container for any errors related to root hints. Ensure the script has successfully downloaded and configured the root hints file.
+
+### Viewing Logs
+
+You can view the logs for the running Pi-Hole container using:
+
+```bash
+docker logs pihole
+```
+
+## Updating the Container
+
+To update the container to the latest version of Pi-Hole and Unbound:
+
+1. Pull the latest image:
+   ```bash
+   docker-compose pull
+   ```
+2. Recreate and start the container:
+   ```bash
+   docker-compose up -d --force-recreate
+   ```
+
+## Contributing
+
+Contributions are welcome! Please read the [CONTRIBUTING.md](CONTRIBUTING.md) file for details on our code of conduct, and the process for submitting pull requests.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Additional Resources
+
+- [Pi-Hole Documentation](https://docs.pi-hole.net/)
+- [Unbound Documentation](https://nlnetlabs.nl/documentation/unbound/)
+- [Docker Documentation](https://docs.docker.com/)
