@@ -8,9 +8,14 @@ FROM pihole/pihole:${PIHOLE_VERSION}
 RUN apt-get update && \
     apt-get install -y --no-install-recommends unbound curl && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    mkdir -p /etc/services.d/unbound && \
-    chmod +x /etc/services.d/unbound/run
+    rm -rf /var/lib/apt/lists/*
+
+# Set up the Unbound service directory and copy the run script    
+RUN mkdir -p /etc/services.d/unbound
+COPY unbound-run /etc/services.d/unbound/run
+
+# Ensure the run script is executable
+RUN chmod +x /etc/services.d/unbound/run
 
 # Copy configuration files for Lighttpd, Unbound, and DNSmasq
 COPY lighttpd-external.conf /etc/lighttpd/external.conf 
