@@ -13,7 +13,7 @@ jobs:
 
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
       # This is used to complete the identity challenge
       # with sigstore/fulcio when running outside of PRs.
@@ -108,3 +108,19 @@ jobs:
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+
+      - uses: softprops/action-gh-release@v2.0.8
+        with:
+          tag_name: ${{ steps.extract-version.outputs.PIHOLE_VERSION }}
+          body: |
+            #### This is an update for the `one-container` configuration
+
+            - Updating Pi-Hole base image to `${{ steps.extract-version.outputs.PIHOLE_VERSION }}` ([link](https://github.com/pi-hole/docker-pi-hole/releases/tag/${{ steps.extract-version.outputs.PIHOLE_VERSION }}))
+
+            #### Update instructions
+
+            ```shell
+            docker-compose pull
+            docker-compose up -d
+            ```
+          make_latest: true
