@@ -2,5 +2,15 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended"
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": ["docker"],
+      "matchFileNames": ["one-container/pihole-unbound/Dockerfile"],
+      "updateTypes": ["major", "minor", "patch"],
+      "automerge": true,
+      "automergeType": "branch",
+      "ignoreTests": true
+    }
   ]
 }
