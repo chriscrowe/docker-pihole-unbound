@@ -79,6 +79,11 @@ jobs:
           tags: |
             type=raw,value=${{ steps.extract-version.outputs.PIHOLE_VERSION }}
             type=raw,value=latest
+          # Set the OCI Image Specification source label to the base image repository, to enable tools 
+          # like Renovate and Dependabot to automatically fetch release notes for new versions.
+          # We cannot use https://github.com/pi-hole/pi-hole directly, since it uses a different versioning scheme.
+          labels: |
+            org.opencontainers.image.source=https://github.com/pi-hole/docker-pi-hole
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
